@@ -961,5 +961,33 @@ document.addEventListener("keydown", e => { if(e.key==="Escape") closeModalDirec
 buildGrids();
 initQuiz();
 </script>
+<audio id="bgMusic" loop autoplay muted playsinline preload="auto">
+  <source src="audio/naturaleza.mp3" type="audio/mp3">
+</audio>
+
+<script>
+const bgMusic = document.getElementById("bgMusic");
+let musicStarted = false;
+
+async function startMusic() {
+  if (musicStarted || !bgMusic) return;
+  try {
+    await bgMusic.play();
+    musicStarted = true;
+  } catch (error) {
+    console.warn("No se pudo iniciar la música de fondo:", error);
+  }
+}
+
+async function enableMusic() {
+  bgMusic.muted = false;
+  await startMusic();
+}
+
+startMusic();
+
+document.addEventListener("click", enableMusic, { once: true });
+document.addEventListener("touchstart", enableMusic, { once: true });
+</script>
 </body>
 </html>

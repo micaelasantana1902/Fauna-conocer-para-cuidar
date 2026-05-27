@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fauna: Conocer para Cuidar — Maldonado, Uruguay</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #2d6a4f;
+    --verde-claro: #52b788;
+    --verde-agua: #74c69d;
+    --celeste: #1a6b9e;
+    --celeste-claro: #48cae4;
+    --tierra: #8b5e3c;
+    --arena: #f4e4c1;
+    --crema: #faf7f0;
+    --oscuro: #1a1a2e;
+    --gris: #4a4a5a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--crema);
+    color: var(--oscuro);
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0a2940 0%, #1a4a3a 40%, #0d3b2e 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    opacity: 0.08;
+    background-image: radial-gradient(circle at 20% 50%, #52b788 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, #48cae4 0%, transparent 40%),
+                      radial-gradient(circle at 60% 80%, #2d6a4f 0%, transparent 45%);
+  }
+  .leaf-deco {
+    position: absolute;
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .leaf-deco.l1 { top: 5%; left: 5%; transform: rotate(-20deg); }
+  .leaf-deco.l2 { bottom: 10%; right: 8%; transform: rotate(30deg); font-size: 6rem; }
+  .leaf-deco.l3 { top: 30%; right: 3%; transform: rotate(-10deg); font-size: 5rem; }
+
+  .hero-badge {
+    background: rgba(82,183,136,0.2);
+    border: 1px solid rgba(82,183,136,0.4);
+    color: #74c69d;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 span { color: #74c69d; }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+  .hero-scroll {
+    margin-top: 1rem;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)}
+  }
+  .hero-stats {
+    display: flex; gap: 2.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700;
+    color: #74c69d;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+  }
+
+  /* ===== NAV TABS ===== */
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: var(--oscuro);
+    padding: 0;
+    position: sticky; top: 0; z-index: 100;
+    overflow-x: auto;
+  }
+  .nav-tab {
+    padding: 1rem 1.8rem;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 0.5rem;
+    user-select: none;
+  }
+  .nav-tab:hover { color: rgba(255,255,255,0.8); }
+  .nav-tab.active {
+    color: #fff;
+    border-bottom-color: var(--verde-agua);
+  }
+  .nav-tab.terrestre.active { border-bottom-color: #8fbf72; }
+  .nav-tab.acuatica.active { border-bottom-color: #48cae4; }
+  .nav-tab.aerea.active { border-bottom-color: #f4a261; }
+  .tab-icon { font-size: 1.2rem; }
+
+  /* ===== SECTION ===== */
+  .section { display: none; padding: 2.5rem 1.5rem 4rem; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin-bottom: 0.5rem;
+  }
+  .section-header p {
+    color: var(--gris);
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .terrestre .section-header h2 { color: #3a7d12; }
+  .acuatica .section-header h2 { color: #1a6b9e; }
+  .aerea .section-header h2 { color: #c25c1a; }
+
+  /* ===== ANIMAL GRID ===== */
+  .animals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.2rem;
+  }
+  .animal-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+    border: 2px solid transparent;
+    position: relative;
+  }
+  .animal-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+  }
+  .animal-card.selected {
+    border-color: currentColor;
+  }
+  .terrestre .animal-card:hover { box-shadow: 0 16px 40px rgba(58,125,18,0.18); }
+  .acuatica .animal-card:hover { box-shadow: 0 16px 40px rgba(26,107,158,0.18); }
+  .aerea .animal-card:hover { box-shadow: 0 16px 40px rgba(194,92,26,0.18); }
+
+  .animal-img-wrap {
+    height: 170px;
+    overflow: hidden;
+    position: relative;
+    background: #e0e8e4;
+  }
+  .animal-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    display: block;
+  }
+  .animal-card:hover .animal-img-wrap img { transform: scale(1.08); }
+  .animal-img-wrap .img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.18) 100%);
+  }
+
+  .animal-info { padding: 1rem 1rem 1.2rem; }
+  .animal-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.2rem;
+    color: var(--oscuro);
+  }
+  .animal-sciname {
+    font-size: 0.75rem;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  .animal-teaser {
+    font-size: 0.82rem;
+    color: var(--gris);
+    line-height: 1.5;
+  }
+  .click-hint {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.73rem;
+    margin-top: 0.6rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 50px;
+    font-weight: 500;
+  }
+  .terrestre .click-hint { background: #e8f5d6; color: #3a7d12; }
+  .acuatica .click-hint { background: #d0eef8; color: #1a6b9e; }
+  .aerea .click-hint { background: #fde8d0; color: #c25c1a; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10,20,30,0.75);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 24px;
+    max-width: 680px;
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    animation: modalIn 0.4s cubic-bezier(0.34,1.3,0.64,1);
+    position: relative;
+  }
+  @keyframes modalIn { from{opacity:0;transform:scale(0.85) translateY(30px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
+  .modal-hero {
+    height: 300px;
+    overflow: hidden;
+    border-radius: 24px 24px 0 0;
+    position: relative;
+    background: #1a2a1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-hero img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  .modal-hero span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: rgba(255,255,255,0.9);
+    border: none; border-radius: 50%;
+    width: 36px; height: 36px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--oscuro);
+    font-weight: bold;
+    transition: background 0.2s, transform 0.2s;
+    z-index: 10;
+  }
+  .modal-close:hover { background: #fff; transform: scale(1.1); }
+
+  .modal-body { padding: 1.5rem 2rem 2rem; }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem; font-weight: 900;
+    margin-bottom: 0.2rem;
+  }
+  .modal-sciname {
+    font-style: italic; color: #888;
+    font-size: 0.9rem; margin-bottom: 1.2rem;
+  }
+
+  .modal-tabs {
+    display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+  }
+  .modal-tab {
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 2px solid #e0e0e0;
+    background: #f5f5f5;
+    color: #666;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .modal-tab.active, .modal-tab:hover {
+    background: var(--oscuro);
+    color: #fff;
+    border-color: var(--oscuro);
+  }
+  .terrestre-modal .modal-tab.active { background: #3a7d12; border-color: #3a7d12; }
+  .acuatica-modal .modal-tab.active { background: #1a6b9e; border-color: #1a6b9e; }
+  .aerea-modal .modal-tab.active { background: #c25c1a; border-color: #c25c1a; }
+
+  .modal-content-panel { display: none; }
+  .modal-content-panel.active { display: block; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .modal-content-panel h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .terrestre-modal h3 { color: #3a7d12; }
+  .acuatica-modal h3 { color: #1a6b9e; }
+  .aerea-modal h3 { color: #c25c1a; }
+
+  .modal-content-panel p, .modal-content-panel li {
+    color: var(--gris);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+  .modal-content-panel ul { padding-left: 1.3rem; }
+  .modal-content-panel li { margin-bottom: 0.4rem; }
+
+  .habitat-tag {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: var(--arena);
+    color: var(--tierra);
+    font-size: 0.8rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    margin-right: 0.3rem;
+  }
+  .action-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.5rem; }
+  .action-card {
+    background: #f8faf5;
+    border-radius: 12px;
+    padding: 0.9rem;
+    border-left: 3px solid #8bc34a;
+  }
+  .acuatica-modal .action-card { background: #f0f8ff; border-left-color: #29b6f6; }
+  .aerea-modal .action-card { background: #fff8f0; border-left-color: #ff8a50; }
+  .action-card strong { font-size: 0.82rem; color: var(--oscuro); display: block; margin-bottom: 0.2rem; }
+  .action-card span { font-size: 0.8rem; color: #666; line-height: 1.5; }
+  .status-badge {
+    display: inline-block;
+    font-size: 0.73rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 50px;
+    font-weight: 500;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .status-verde { background: #e8f5d6; color: #2e7d0e; }
+  .status-amarillo { background: #fff8d6; color: #856b00; }
+  .status-rojo { background: #fde8e8; color: #b71c1c; }
+
+  /* ===== QUIZ ===== */
+  .quiz-section {
+    background: linear-gradient(135deg, #0a2940, #1a4a3a);
+    padding: 3rem 2rem;
+    text-align: center;
+    color: #fff;
+  }
+  .quiz-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .quiz-section p { color: rgba(255,255,255,0.65); margin-bottom: 2rem; }
+
+  .quiz-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .quiz-question {
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .quiz-emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+  .quiz-option {
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.85);
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.25s;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .quiz-option:hover:not(.disabled) { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
+  .quiz-option.correct { background: rgba(82,183,136,0.3); border-color: #52b788; color: #b2f0d0; }
+  .quiz-option.wrong { background: rgba(239,83,80,0.25); border-color: #ef5350; color: #ffcdd2; }
+  .quiz-option.disabled { cursor: default; }
+  .quiz-feedback {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: rgba(82,183,136,0.2); color: #b2f0d0; }
+  .quiz-feedback.fail { background: rgba(239,83,80,0.2); color: #ffcdd2; }
+  .quiz-next {
+    margin-top: 1.2rem;
+    background: var(--verde-agua);
+    color: var(--oscuro);
+    border: none;
+    padding: 0.7rem 1.8rem;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: none;
+    transition: transform 0.2s;
+  }
+  .quiz-next.show { display: inline-block; }
+  .quiz-next:hover { transform: scale(1.05); }
+  .quiz-score {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.5rem;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background: var(--oscuro);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+  .footer strong { color: rgba(255,255,255,0.8); }
+
+  /* ===== RESPONSIVO ===== */
+  @media (max-width: 600px) {
+    .animals-grid { grid-template-columns: repeat(2, 1fr); }
+    .action-cards { grid-template-columns: 1fr; }
+    .modal-body { padding: 1rem 1.2rem 1.5rem; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .nav-tab { padding: 0.8rem 1rem; font-size: 0.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="leaf-deco l1">🌿</div>
+  <div class="leaf-deco l2">🍃</div>
+  <div class="leaf-deco l3">🌱</div>
+  <span class="hero-badge">🇺🇾 Maldonado · Uruguay</span>
+  <h1>Fauna:<br><span>Conocer para Cuidar</span></h1>
+  <p class="hero-sub">Un viaje por las especies que habitan nuestro departamento</p>
+  <div class="hero-stats">
+    <div class="stat-item"><span class="stat-num">Quince</span><span class="stat-label">Especies</span></div>
+    <div class="stat-item"><span class="stat-num">Tres</span><span class="stat-label">Hábitats</span></div>
+    <div class="stat-item"><span class="stat-num">Muchas</span><span class="stat-label">Razones para cuidar</span></div>
+  </div>
+  <p class="hero-scroll">↓ explorar</p>
+</section>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <div class="nav-tab terrestre active" onclick="showTab('terrestre')">
+    <span class="tab-icon">🌿</span> Terrestres
+  </div>
+  <div class="nav-tab acuatica" onclick="showTab('acuatica')">
+    <span class="tab-icon">🌊</span> Acuáticas
+  </div>
+  <div class="nav-tab aerea" onclick="showTab('aerea')">
+    <span class="tab-icon">🦅</span> Aéreas
+  </div>
+</nav>
+
+<!-- WRAPPER for sections -->
+<div style="background: var(--crema); min-height: 60vh;">
+
+<!-- TERRESTRES -->
+<div id="sec-terrestre" class="section terrestre active">
+  <div class="section-header">
+    <h2>🌿 Fauna Terrestre</h2>
+    <p>Mamíferos y reptiles que recorren los campos, sierras y bosques de Maldonado. Cada uno cumple un rol clave en el ecosistema.</p>
+  </div>
+  <div class="animals-grid" id="grid-terrestre"></div>
+</div>
+
+<!-- ACUÁTICAS -->
+<div id="sec-acuatica" class="section acuatica">
+  <div class="section-header">
+    <h2>🌊 Fauna Acuática</h2>
+    <p>Desde la costa atlántica hasta las lagunas interiores, el agua de Maldonado es hogar de una fauna única y diversa.</p>
+  </div>
+  <div class="animals-grid" id="grid-acuatica"></div>
+</div>
+
+<!-- AÉREAS -->
+<div id="sec-aerea" class="section aerea">
+  <div class="section-header">
+    <h2>🦅 Fauna Aérea</h2>
+    <p>Las aves de Maldonado son centinelas del ambiente: su presencia o ausencia refleja la salud de los ecosistemas.</p>
+  </div>
+  <div class="animals-grid" id="grid-aerea"></div>
+</div>
+
+</div><!-- end wrapper -->
+
+<!-- QUIZ -->
+<div class="quiz-section">
+  <h2>¿Cuánto aprendiste?</h2>
+  <p>Ponete a prueba con este mini-quiz sobre la fauna de Maldonado</p>
+  <div class="quiz-card">
+    <span class="quiz-emoji" id="quiz-emoji">🧐</span>
+    <p class="quiz-question" id="quiz-question">Cargando pregunta...</p>
+    <div class="quiz-options" id="quiz-options"></div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <button class="quiz-next" id="quiz-next" onclick="nextQuestion()">Siguiente pregunta →</button>
+    <p class="quiz-score" id="quiz-score"></p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p><strong>Fauna: Conocer para Cuidar</strong> — Biodiversidad de Maldonado, Uruguay</p>
+  <p>Recurso educativo creado siguiendo los Principios de Aprendizaje Multimedia de Richard Mayer.</p>
+  <p style="margin-top:0.5rem">🌿 Cuidar la fauna local es responsabilidad de todos</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-hero" id="modal-hero"></div>
+    <div class="modal-body">
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-sciname" id="modal-sciname"></p>
+      <div id="modal-habitats"></div>
+      <div class="modal-tabs" id="modal-tabs">
+        <button class="modal-tab active" onclick="switchModalTab(0)">📋 ¿Quién soy?</button>
+        <button class="modal-tab" onclick="switchModalTab(1)">🗺️ ¿Dónde vivo?</button>
+        <button class="modal-tab" onclick="switchModalTab(2)">💚 ¿Cómo cuidarme?</button>
+      </div>
+      <div id="modal-panel-0" class="modal-content-panel active"></div>
+      <div id="modal-panel-1" class="modal-content-panel"></div>
+      <div id="modal-panel-2" class="modal-content-panel"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const animals = {
+  terrestre: [
+    {
+      emoji: "🦔",
+      img: "img/carpincho.webp",
+      name: "Carpincho",
+      sciname: "Hydrochoerus hydrochaeris",
+      teaser: "El roedor más grande del mundo, muy común en bañados",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Bañados", "Costas de ríos", "Lagunas"],
+      quien: `<h3>El gigante amigable</h3><p>El carpincho es el roedor más grande del mundo: puede pesar hasta 65 kg. De aspecto rechoncho y pelaje pardo, vive siempre cerca del agua aunque es un animal terrestre. Es semiacuático: nada con facilidad y usa el agua para escapar de predadores.</p><p style="margin-top:0.8rem">Es un animal social que vive en grupos familiares. Tiene un carácter tranquilo y curiosamente muchas otras especies de animales lo usan como "silla" para descansar.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Se encuentran en los bañados costeros, orillas del Río Maldonado, Laguna del Sauce y Laguna Garzón. También aparecen en estancias con arroyos. Son frecuentes en el Parque Nacional Laguna de Rocha (zona limítrofe).</p><br><div class="habitat-tag">💧 Bañados costeros</div><div class="habitat-tag">🌾 Pastizales húmedos</div><div class="habitat-tag">🏞️ Riberas de arroyos</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>🚗 Cuidado en ruta</strong><span>Reducí la velocidad en zonas de bañados, especialmente de noche</span></div><div class="action-card"><strong>🌿 Proteger humedales</strong><span>Los humedales son su hogar: apoyá su conservación</span></div><div class="action-card"><strong>🐕 Mascotas bajo control</strong><span>Los perros sueltos son una amenaza para carpinchos</span></div><div class="action-card"><strong>📸 Observación responsable</strong><span>No alimentarlos ni acercarse demasiado</span></div></div>`
+    },
+    {
+      emoji: "🦊",
+      img: "img/ZORRO_DE_MONTE.jpg",      
+      name: "Zorro de monte",
+      sciname: "Cerdocyon thous",
+      teaser: "Canino nativo adaptable y curioso, gran controlador de plagas",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Monte nativo", "Campos", "Serranías"],
+      quien: `<h3>El zorro criollo</h3><p>El zorro de monte es un canino nativo de pelaje grisáceo con toques rojizos. Tiene un hocico alargado, orejas grandes y una cola espesa. Es omnívoro: come frutas, insectos, pequeños vertebrados y carroña.</p><p style="margin-top:0.8rem">Cumple un rol ecológico fundamental como dispersor de semillas y controlador de roedores. Es principalmente nocturno y muy adaptable a distintos ambientes.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Habita en las serranías del departamento, especialmente en el monte serrano de la Sierra de las Ánimas y zonas aledañas. También se lo ve en campos abiertos y bordes de monte. Tolera bien los ambientes modificados.</p><br><div class="habitat-tag">🌳 Monte serrano</div><div class="habitat-tag">🌄 Serranías</div><div class="habitat-tag">🌾 Campos abiertos</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>🚫 No cazar</strong><span>La caza es ilegal y perjudica el equilibrio del ecosistema</span></div><div class="action-card"><strong>🚗 Precaución vial</strong><span>Muchos zorros mueren atropellados. Atención al manejar de noche</span></div><div class="action-card"><strong>🐓 Gallineros seguros</strong><span>Un buen gallinero evita conflictos con zorros</span></div><div class="action-card"><strong>💊 Evitar venenos</strong><span>Las trampas y raticidas los dañan indirectamente</span></div></div>`
+    },
+    {
+      emoji: "🦎",
+      img: "img/LAGARTO_OVERO.jpg",      
+      name: "Lagarto overo",
+      sciname: "Salvator merianae",
+      teaser: "El mayor lagarto de Uruguay, especie clave del monte",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Monte nativo", "Costas rocosas", "Jardines"],
+      quien: `<h3>El gran lagarto uruguayo</h3><p>El lagarto overo es el reptil más grande de Uruguay, pudiendo superar 1,5 metros. Su cuerpo está cubierto de escamas con un patrón de manchas claras y oscuras muy llamativo. Tiene garras fuertes y una lengua bífida.</p><p style="margin-top:0.8rem">Es un carroñero y predador activo: come frutos, caracoles, insectos y pequeños vertebrados. Excava madrigueras y es muy importante para el ecosistema.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Presente en montes nativos, costas rocosas y hasta en parques urbanos de la ciudad de Maldonado y Punta del Este. Es muy adaptable. Le gustan las zonas soleadas con refugios cercanos.</p><br><div class="habitat-tag">🌳 Monte nativo</div><div class="habitat-tag">🪨 Costas rocosas</div><div class="habitat-tag">🌻 Jardines urbanos</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>🧹 No quitar basura</strong><span>En el campo, no eliminar troncos viejos que usan de refugio</span></div><div class="action-card"><strong>🐕 Mascotas atentas</strong><span>Los perros pueden lastimar lagartos en jardines</span></div><div class="action-card"><strong>📷 Respetar distancia</strong><span>Observarlos sin tocarlos ni intentar capturarlos</span></div><div class="action-card"><strong>🌿 Monte nativo</strong><span>Proteger los montes nativos donde se refugian</span></div></div>`
+    },
+    {
+      emoji: "🦦",
+      img: "img/LOBO_DE_RIO.jpg",
+      name: "Lobito de río",
+      sciname: "Lontra longicaudis",
+      teaser: "Nutria neotropical, símbolo de ríos limpios",
+      status: "amarillo",
+      statusTxt: "Casi amenazado",
+      habitats: ["Ríos", "Arroyos", "Lagunas"],
+      quien: `<h3>El nadador elegante</h3><p>El lobito de río es una nutria mediana (hasta 1 m incluyendo la cola) con pelaje pardo oscuro y garganta blanquecina. Es excelente nadador: tiene patas palmeadas, cuerpo hidrodinámico y puede contener la respiración por varios minutos.</p><p style="margin-top:0.8rem">Se alimenta principalmente de peces, crustáceos y anfibios. Su presencia indica buena calidad del agua.</p><span class="status-badge status-amarillo">● Casi amenazado</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Habita en el Río Maldonado, sus afluentes y algunas lagunas del interior del departamento. Es más frecuente en tramos del río con vegetación de ribera densa y sin contaminación. Requiere ríos con buena calidad de agua.</p><br><div class="habitat-tag">🏞️ Ríos con vegetación</div><div class="habitat-tag">💧 Arroyos limpios</div><div class="habitat-tag">🌊 Lagunas interiores</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>💧 Agua limpia</strong><span>No arrojar residuos ni químicos a ríos y arroyos</span></div><div class="action-card"><strong>🐟 Pesca responsable</strong><span>Respetar vedas y tamaños mínimos de pesca</span></div><div class="action-card"><strong>🌿 Riberas nativas</strong><span>Conservar la vegetación de ribera que usan de refugio</span></div><div class="action-card"><strong>📢 Reportar avistajes</strong><span>Si lo ves, reportá la ubicación a SNAP o DINAMA</span></div></div>`
+    },
+    {
+      emoji: "🦔",
+      img: "img/TATU.webp",
+      name: "Tatú peludo",
+      sciname: "Chaetophractus villosus",
+      teaser: "Armadillo adaptable, excavador nocturno del campo uruguayo",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Pastizales", "Campos", "Serranías"],
+      quien: `<h3>El armadillo del campo</h3><p>El tatú peludo es el armadillo más común de Uruguay. Su caparazón de placas óseas le cubre el dorso y tiene pelos visibles entre las placas. Mide unos 40 cm y excava madrigueras donde pasa el día.</p><p style="margin-top:0.8rem">Es omnívoro: come insectos, larvas, raíces y carroña. Sus excavaciones airean el suelo y son usadas por otras especies. Es una especie resiliente aunque sufre atropellamientos.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Presente en pastizales, campos ganaderos y serranías de todo el departamento. Es especialmente frecuente en suelos blandos donde puede excavar fácilmente. Tolera bien los ambientes rurales modificados.</p><br><div class="habitat-tag">🌾 Pastizales</div><div class="habitat-tag">🌄 Sierras</div><div class="habitat-tag">🐄 Campos ganaderos</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>🚗 Cuidado vial</strong><span>Son lentos y frecuentemente atropellados. Reducí velocidad de noche</span></div><div class="action-card"><strong>🐕 Perros bajo control</strong><span>Los perros pueden atacarlos; mantenerlos bajo control</span></div><div class="action-card"><strong>🌾 Pastizales naturales</strong><span>Preservar pastizales sin uso excesivo de agroquímicos</span></div><div class="action-card"><strong>💊 Sin venenos</strong><span>Los insecticidas reducen su disponibilidad de alimento</span></div></div>`
+    }
+  ],
+  acuatica: [
+    {
+      emoji: "🐬",
+      img: "img/DELFIN_NARIZ_DE_BOTELLA__TONINA.webp",
+      name: "Tonina overa",
+      sciname: "Cephalorhynchus commersonii",
+      teaser: "Delfín blanco y negro, ícono de la costa atlántica uruguaya",
+      status: "amarillo",
+      statusTxt: "Datos insuficientes",
+      habitats: ["Costa atlántica", "Plataforma continental"],
+      quien: `<h3>El delfín blanco y negro</h3><p>La tonina overa es uno de los delfines más pequeños del mundo (hasta 1,7 m) y uno de los más hermosos: tiene un llamativo patrón blanco y negro. Es ágil, juguetona y frecuentemente se acerca a las embarcaciones.</p><p style="margin-top:0.8rem">Come peces y calamares. Es una especie endémica del Atlántico sur. Se ve con frecuencia frente a las costas de Rocha y Maldonado, especialmente en invierno.</p><span class="status-badge status-amarillo">● Datos insuficientes</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Se observa frente a las playas de Maldonado y la costa atlántica uruguaya, generalmente en grupos pequeños. También en las aguas de La Paloma y Punta del Diablo. Prefiere aguas frías y poco profundas.</p><br><div class="habitat-tag">🌊 Costa atlántica</div><div class="habitat-tag">🐠 Aguas frías</div><div class="habitat-tag">⚓ Plataforma costera</div>`,
+      cuidar: `<h3>Cómo protegerla</h3><div class="action-cards"><div class="action-card"><strong>🚤 Embarcaciones lentas</strong><span>No acercarse a menos de 50 m con embarcaciones rápidas</span></div><div class="action-card"><strong>🎣 Redes responsables</strong><span>Las redes de enmalle las capturan accidentalmente</span></div><div class="action-card"><strong>🗑️ Sin plásticos</strong><span>No arrojar plásticos al mar: los confunden con comida</span></div><div class="action-card"><strong>🔬 Apoyar ciencia</strong><span>Reportar avistajes al CENPAT o Instituto de Biología marina</span></div></div>`
+    },
+    {
+      emoji: "🦭",
+      img: "img/LOBO_MARINO.JPG",
+      name: "Lobo marino de un pelo",
+      sciname: "Otaria flavescens",
+      teaser: "Gran pinnípedo que coloniza las costas rocosas de Maldonado",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Costas rocosas", "Islas", "Plataforma marina"],
+      quien: `<h3>El rey de las rocas</h3><p>El lobo marino de un pelo es un pinnípedo grande: los machos pueden pesar 300 kg y lucen una gruesa melena oscura. Las hembras son más pequeñas y de color pardo claro. Viven en colonias ruidosas y muy activas.</p><p style="margin-top:0.8rem">Son excelentes nadadores que se alimentan de peces y calamares. En tierra son torpes pero dominantes. Uruguay tiene una de las colonias reproductivas más importantes del Atlántico.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>La Isla de Lobos, frente a Punta del Este, alberga la mayor colonia de lobos marinos del Atlántico Sur (más de 200.000 individuos). También se los ve en playas y rocas de la costa local, especialmente en invierno.</p><br><div class="habitat-tag">🏝️ Isla de Lobos</div><div class="habitat-tag">🪨 Costas rocosas</div><div class="habitat-tag">🌊 Mar abierto</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>🚫 No molestar colonias</strong><span>Respetar la distancia mínima en Isla de Lobos</span></div><div class="action-card"><strong>🐟 Pesca sustentable</strong><span>La sobrepesca reduce su disponibilidad de alimento</span></div><div class="action-card"><strong>🗑️ Playas limpias</strong><span>Los residuos marinos los lastiman: cuidar las playas</span></div><div class="action-card"><strong>🚤 Avistajes responsables</strong><span>Observar desde distancia segura sin perturbación</span></div></div>`
+    },
+    {
+      emoji: "🐢",
+      img: "img/TORTUGA_MARINA.jpg",
+      name: "Tortuga cabezona",
+      sciname: "Caretta caretta",
+      teaser: "Tortuga marina que visita las costas uruguayas para alimentarse",
+      status: "amarillo",
+      statusTxt: "Vulnerable",
+      habitats: ["Mar abierto", "Aguas costeras", "Playas (anidación)"],
+      quien: `<h3>La viajera del océano</h3><p>La tortuga cabezona es un reptil marino con caparazón pardo rojizo que puede pesar 200 kg. Tiene una cabeza grande y poderosa con la que tritura moluscos y crustáceos. Puede vivir más de 80 años.</p><p style="margin-top:0.8rem">Realiza migraciones de miles de kilómetros. Las hembras regresan a la playa donde nacieron para poner sus huevos. La contaminación y la pesca accidental son sus mayores amenazas.</p><span class="status-badge status-amarillo">● Vulnerable</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Se alimenta en las aguas frente a la costa atlántica de Uruguay, especialmente cerca de Cabo Polonio y la zona exterior a Punta del Este. Ocasionalmente vara en las playas. No anida en Uruguay, pero sus aguas son área de alimentación.</p><br><div class="habitat-tag">🌊 Atlántico costero</div><div class="habitat-tag">🐟 Fondos marinos</div><div class="habitat-tag">🏖️ Playas (raras veces)</div>`,
+      cuidar: `<h3>Cómo protegerla</h3><div class="action-cards"><div class="action-card"><strong>🐟 Pesca responsable</strong><span>Usar anzuelos circulares y redes con escape para tortugas</span></div><div class="action-card"><strong>🗑️ Sin plásticos</strong><span>Confunden bolsas con medusas. Cero plásticos al mar</span></div><div class="action-card"><strong>🚨 Reportar varamientos</strong><span>Si encontrás una tortuga en la playa, llamá a DINAMA</span></div><div class="action-card"><strong>🔦 Playas oscuras</strong><span>Las luces artificiales desorientan a las crías</span></div></div>`
+    },
+    {
+      emoji: "🦈",
+      img: "img/CAZON.jpg", 
+      name: "Cazón",
+      sciname: "Mustelus schmitti",
+      teaser: "Tiburón pequeño y fundamental para el equilibrio marino costero",
+      status: "rojo",
+      statusTxt: "En peligro",
+      habitats: ["Plataforma continental", "Estuario", "Fondos arenosos"],
+      quien: `<h3>El tiburón olvidado</h3><p>El cazón es un tiburón pequeño (hasta 1 m) de dientes chatos, propio del Atlántico sudoccidental. No es peligroso para los humanos. Es de color grisáceo con vientre blanco y nada cerca del fondo.</p><p style="margin-top:0.8rem">Se alimenta de crustáceos y peces pequeños. Es una especie ovovivípara y de reproducción lenta, muy sensible a la sobrepesca. Está en peligro crítico de extinción en Uruguay.</p><span class="status-badge status-rojo">● En peligro</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Habita los fondos arenosos y fangosos de la plataforma continental frente a Maldonado y el Río de la Plata. Es capturado accidentalmente en pesquerías artesanales. Su distribución se ha reducido drásticamente.</p><br><div class="habitat-tag">🌊 Plataforma continental</div><div class="habitat-tag">🟤 Fondos arenosos</div><div class="habitat-tag">🐟 Estuario del Plata</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>🎣 No pescar cazones</strong><span>Tiene veda nacional. Si es capturada accidentalmente, devolverla al agua</span></div><div class="action-card"><strong>🐟 Consumo responsable</strong><span>Consultar listas de pesca sustentable al consumir mariscos</span></div><div class="action-card"><strong>📢 Difundir</strong><span>Es poco conocido. Compartir información sobre su situación</span></div><div class="action-card"><strong>🔬 Apoyar investigación</strong><span>Reportar capturas accidentales al DINARA</span></div></div>`
+    },
+    {
+      emoji: "🦩",
+      img: "img/RAYA_LARIGO_MEJOR.webp",
+      name: "Raya látigo",
+      sciname: "Hypanus guttatus",
+      teaser: "Elegante raya que nada en las aguas cálidas de la costa",
+      status: "amarillo",
+      statusTxt: "Datos insuficientes",
+      habitats: ["Fondos arenosos", "Bahías", "Aguas costeras"],
+      quien: `<h3>La planeadora del fondo</h3><p>La raya látigo es un elasmobranquio de cuerpo aplanado en forma de disco, con una larga cola con espina venenosa. Puede alcanzar 1,5 m de disco. Su color va del pardo al grisáceo y tiene manchas claras.</p><p style="margin-top:0.8rem">Nada cerca del fondo enterrándose en la arena. Come bivalvos, crustáceos y peces. Pare crías vivas. No agrede a los humanos salvo que se la pise.</p><span class="status-badge status-amarillo">● Datos insuficientes</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Presente en la costa atlántica y en las bahías de Maldonado y Punta del Este, especialmente en verano cuando las aguas se calientan. Se enterran en las áreas de playa con poca profundidad. Las Islas de Punta del Este son un área frecuente.</p><br><div class="habitat-tag">🏖️ Fondos arenosos costeros</div><div class="habitat-tag">🌊 Bahía de Punta del Este</div><div class="habitat-tag">☀️ Aguas cálidas estivales</div>`,
+      cuidar: `<h3>Cómo protegerla</h3><div class="action-cards"><div class="action-card"><strong>🚶 Arrastrar los pies</strong><span>Al entrar al mar, arrastrá los pies para no pisarla</span></div><div class="action-card"><strong>🐟 Pesca selectiva</strong><span>Evitar redes de arrastre que las capturan masivamente</span></div><div class="action-card"><strong>🗑️ Playas limpias</strong><span>Los residuos en el fondo destruyen su hábitat</span></div><div class="action-card"><strong>📸 Foto y suelta</strong><span>Si se captura accidentalmente, documentar y soltar con cuidado</span></div></div>`
+    }
+  ],
+  aerea: [
+    {
+      emoji: "🦜",
+      img: "img/COTORRA.jfif",
+      name: "Cotorra",
+      sciname: "Myiopsitta monachus",
+      teaser: "Loro verde social y ruidoso, muy común en zonas urbanas y rurales",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Zonas urbanas", "Campos", "Monte nativo"],
+      quien: `<h3>La cotorra charlatana</h3><p>La cotorra es el único loro que construye nidos comunales de palitos (pueden pesar varios kilos). De color verde brillante con frente y pecho gris, es muy ruidosa y vive en colonias. Mide unos 30 cm.</p><p style="margin-top:0.8rem">Es omnívora: come frutas, semillas e insectos. Es muy inteligente y puede aprender palabras. Está presente en casi todo Uruguay y especialmente en Maldonado.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Presente en toda la ciudad de Maldonado, Punta del Este y zonas rurales. Sus grandes nidos comunales se ven en eucaliptos, torres eléctricas y estructuras urbanas. Es una de las aves más abundantes del departamento.</p><br><div class="habitat-tag">🏙️ Zonas urbanas</div><div class="habitat-tag">🌳 Arbolado urbano</div><div class="habitat-tag">🌾 Campos agrícolas</div>`,
+      cuidar: `<h3>Cómo convivir con ella</h3><div class="action-cards"><div class="action-card"><strong>🌳 Árboles nativos</strong><span>Plantar árboles nativos en jardines atrae cotorras y otras aves</span></div><div class="action-card"><strong>🐱 Gatos adentro</strong><span>Los gatos domésticos son una amenaza para aves</span></div><div class="action-card"><strong>🔇 Respetar nidos</strong><span>No destruir nidos aunque sean ruidosos</span></div><div class="action-card"><strong>🐦 No enjaulan</strong><span>La captura de cotorras silvestres es ilegal en Uruguay</span></div></div>`
+    },
+    {
+      emoji: "🦅",
+      img: "img/aguila.jpg",
+      name: "Águila pescadora",
+      sciname: "Pandion haliaetus",
+      teaser: "Rapaz migratoria experta en capturar peces desde el aire",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Costa marina", "Lagunas", "Ríos"],
+      quien: `<h3>La cazadora de peces</h3><p>El águila pescadora es una rapaz de gran tamaño (envergadura hasta 1,8 m) especializada en comer peces. Tiene un patrón blanco y negro, con máscara oscura. Sus patas tienen espinas y son reversibles para sujetar peces resbaladizos.</p><p style="margin-top:0.8rem">Es un visitante invernal en Uruguay. Se cierne sobre el agua y se lanza en picada con las patas por delante para atrapar peces cerca de la superficie. Es una especie cosmopolita.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Se observa en otoño e invierno en la Laguna del Sauce, Laguna Garzón y costas oceánicas de Maldonado. Es visitante regular aunque no nidificante en Uruguay. Se posa en postes y árboles muertos cerca del agua.</p><br><div class="habitat-tag">🏞️ Laguna del Sauce</div><div class="habitat-tag">🌊 Costa atlántica</div><div class="habitat-tag">💧 Lagunas costeras</div>`,
+      cuidar: `<h3>Cómo protegerla</h3><div class="action-cards"><div class="action-card"><strong>💧 Agua limpia</strong><span>Ríos y lagunas limpias garantizan peces para su alimentación</span></div><div class="action-card"><strong>📸 Observación respetuosa</strong><span>No acercarse durante la pesca para no interrumpirla</span></div><div class="action-card"><strong>🌊 Proteger lagunas</strong><span>Apoyar la conservación de la Laguna del Sauce y Garzón</span></div><div class="action-card"><strong>🔬 Registrar avistajes</strong><span>Anotar en eBird para contribuir al monitoreo migratorio</span></div></div>`
+    },
+    {
+      emoji: "🦢",
+      img: "img/Cisne.webp",
+      name: "Cisne de cuello negro",
+      sciname: "Cygnus melancoryphus",
+      teaser: "El cisne nativo de Sudamérica, emblema de lagunas y humedales",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Lagunas", "Bañados", "Estuarios"],
+      quien: `<h3>El cisne sudamericano</h3><p>El cisne de cuello negro tiene cuerpo blanco y un largo cuello negro aterciopelado con una carúncula roja en la base del pico. Es el único cisne nativo de Sudamérica. Puede medir 1,2 m y volar hasta 100 km/h.</p><p style="margin-top:0.8rem">Se alimenta de plantas acuáticas sumergiéndose. Forma parejas estables de por vida. Las crías (polluelos) viajan sobre el lomo de los padres. Su presencia indica un humedal saludable.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Presente en la Laguna de José Ignacio, Laguna Garzón y bañados costeros del departamento. En invierno se concentran en grandes grupos. La Laguna del Sauce también alberga grupos importantes.</p><br><div class="habitat-tag">🏞️ Laguna de José Ignacio</div><div class="habitat-tag">🌾 Bañados costeros</div><div class="habitat-tag">💧 Laguna Garzón</div>`,
+      cuidar: `<h3>Cómo protegerlo</h3><div class="action-cards"><div class="action-card"><strong>🌿 Proteger humedales</strong><span>Sus lagunas son irreemplazables. Apoyar su protección legal</span></div><div class="action-card"><strong>🚤 Embarcaciones lentas</strong><span>No molestar con motos de agua en sus zonas de cría</span></div><div class="action-card"><strong>🍞 No alimentar</strong><span>El pan daña su sistema digestivo</span></div><div class="action-card"><strong>💧 Calidad del agua</strong><span>El agua limpia garantiza su alimentación con plantas acuáticas</span></div></div>`
+    },
+    {
+      emoji: "🦉",
+      img: "img/LECHUZA_DE_CAMPANARIO.jpg",
+      name: "Lechuza de campanario",
+      sciname: "Tyto alba",
+      teaser: "Rapaz nocturna con rostro en forma de corazón, controladora natural de plagas",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Áreas rurales", "Zonas urbanas", "Edificios antiguos"],
+      quien: `<h3>La lechuza del corazón</h3><p>La lechuza de campanario tiene un inconfundible rostro en forma de corazón blanco, con ojos negros. Su plumaje es pardo dorado arriba y blanco abajo. Mide unos 34 cm y tiene un vuelo silencioso y fantasmal.</p><p style="margin-top:0.8rem">Come principalmente roedores (ratones y ratas): puede consumir hasta 1.000 por año. Es la rapaz nocturna más ampliamente distribuida del mundo. Anida en edificios, torres y huecos de árboles.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Presente en zonas rurales y urbanas de Maldonado. Anida en estancias, iglesias, silos y galpones. También se la encuentra en bosques con árboles huecos. Su grito nocturno es inconfundible.</p><br><div class="habitat-tag">🏚️ Edificios rurales</div><div class="habitat-tag">⛪ Campanarios</div><div class="habitat-tag">🌳 Árboles con huecos</div>`,
+      cuidar: `<h3>Cómo protegerla</h3><div class="action-cards"><div class="action-card"><strong>🐀 Sin raticidas</strong><span>Los venenos para ratas la matan indirectamente al comer ratas envenenadas</span></div><div class="action-card"><strong>🏠 Cajas nido</strong><span>Instalar cajas nido en graneros o corrales la atrae naturalmente</span></div><div class="action-card"><strong>🔇 No molestar nidos</strong><span>No disturbar los sitios de anidación activos</span></div><div class="action-card"><strong>🚗 Precaución vial</strong><span>Muchas mueren atropelladas. Cuidado en caminos rurales de noche</span></div></div>`
+    },
+    {
+      emoji: "🐦",
+      img: "img/GARZA.jpg",
+      name: "Garza mora",
+      sciname: "Ardea cocoi",
+      teaser: "La garza más grande de Sudamérica, vigía de humedales y costas",
+      status: "verde",
+      statusTxt: "Preocupación menor",
+      habitats: ["Costas", "Lagunas", "Ríos", "Estuarios"],
+      quien: `<h3>La garza gigante</h3><p>La garza mora es la garza más grande de América del Sur: puede medir 1,3 m de altura con un cuello largo y sinuoso, plumaje gris azulado, cabeza con plumas negras y pico amarillo. Es un ave majestuosa.</p><p style="margin-top:0.8rem">Es una cazadora paciente y solitaria: permanece inmóvil durante largo tiempo esperando que peces, ranas o reptiles se acerquen. Tiene un vuelo lento y elegante con el cuello recogido en S.</p><span class="status-badge status-verde">● Preocupación menor</span>`,
+      donde: `<h3>Hábitat en Maldonado</h3><p>Se observa en costas del Río de la Plata, playas atlánticas, lagunas y bañados costeros de Maldonado. Es una presencia constante en la Laguna del Sauce, Laguna Garzón y costas oceánicas. También en arroyos del interior.</p><br><div class="habitat-tag">🌊 Costa atlántica</div><div class="habitat-tag">🏞️ Lagunas costeras</div><div class="habitat-tag">🏞️ Río de la Plata</div>`,
+      cuidar: `<h3>Cómo protegerla</h3><div class="action-cards"><div class="action-card"><strong>💧 Humedales sanos</strong><span>Depende de cuerpos de agua con buena calidad y abundancia de peces</span></div><div class="action-card"><strong>🏖️ Playas tranquilas</strong><span>No perturbar garcerones en zonas de alimentación</span></div><div class="action-card"><strong>🐱 Gatos bajo control</strong><span>Los gatos pueden cazar garzas jóvenes en zonas costeras</span></div><div class="action-card"><strong>📷 Birdwatching</strong><span>El turismo de aves responsable genera conciencia y recursos</span></div></div>`
+    }
+  ]
+};
+
+// QUIZ
+const quizData = [
+  { emoji: "🦈", q: "¿Cuál especie de tiburón pequeño está en peligro de extinción en Uruguay?", opts: ["Tiburón azul","Cazón","Tintorera","Cornuda"], correct: 1, exp: "¡Así es! El cazón (Mustelus schmitti) está en peligro en Uruguay debido a la sobrepesca. Si se captura accidentalmente, debe soltarse con cuidado." },
+  { emoji: "🦜", q: "¿Cuál es la característica especial del nido de la cotorra?", opts: ["Lo construye en huecos de árboles","Es un nido comunal de palitos que puede pesar varios kilos","Lo hace en el suelo","Es el más pequeño de todas las aves"],correct:1, exp:"¡Correcto! La cotorra construye enormes nidos comunales de ramas que pueden pesar varios kilos, visibles en eucaliptos y estructuras urbanas de Maldonado."}
+];
+
+let qIndex = 0, qScore = 0, qAnswered = false;
+
+function buildGrids() {
+  ["terrestre","acuatica","aerea"].forEach(type => {
+    const grid = document.getElementById("grid-"+type);
+    animals[type].forEach((a, i) => {
+      const card = document.createElement("div");
+      card.className = "animal-card";
+      card.onclick = () => openModal(type, i);
+      card.innerHTML = `
+        <div class="animal-img-wrap">
+          <img src="${a.img}" alt="${a.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem\\'>${a.emoji}</div>'">
+          <div class="img-overlay"></div>
+        </div>
+        <div class="animal-info">
+          <p class="animal-name">${a.name}</p>
+          <p class="animal-sciname">${a.sciname}</p>
+          <p class="animal-teaser">${a.teaser}</p>
+          <span class="click-hint">👆 Descubrir más</span>
+        </div>`;
+      grid.appendChild(card);
+    });
+  });
+}
+
+function showTab(tab) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("sec-"+tab).classList.add("active");
+  document.querySelector(".nav-tab."+tab).classList.add("active");
+}
+
+let currentModalType = "";
+let currentModalTab = 0;
+
+function openModal(type, idx) {
+  const a = animals[type][idx];
+  currentModalType = type;
+  currentModalTab = 0;
+  const modal = document.getElementById("modal-box");
+  modal.className = "modal " + type + "-modal";
+  document.getElementById("modal-hero").innerHTML = `<img src="${a.img}" alt="${a.name}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'font-size:6rem\\'>${a.emoji}</span>'">`;  
+  document.getElementById("modal-title").textContent = a.name;
+  document.getElementById("modal-sciname").textContent = a.sciname;
+  const habEl = document.getElementById("modal-habitats");
+  habEl.innerHTML = a.habitats.map(h=>`<span class="habitat-tag">${h}</span>`).join("");
+  document.getElementById("modal-panel-0").innerHTML = a.quien;
+  document.getElementById("modal-panel-1").innerHTML = a.donde;
+  document.getElementById("modal-panel-2").innerHTML = a.cuidar;
+  const tabs = document.querySelectorAll(".modal-tab");
+  tabs.forEach((t,i) => { t.classList.toggle("active", i===0); });
+  document.querySelectorAll(".modal-content-panel").forEach((p,i) => { p.classList.toggle("active", i===0); });
+  document.getElementById("modal-overlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function switchModalTab(idx) {
+  currentModalTab = idx;
+  document.querySelectorAll(".modal-tab").forEach((t,i) => t.classList.toggle("active", i===idx));
+  document.querySelectorAll(".modal-content-panel").forEach((p,i) => p.classList.toggle("active", i===idx));
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById("modal-overlay")) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById("modal-overlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function initQuiz() {
+  qIndex = 0; qScore = 0;
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (qIndex >= quizData.length) {
+    showFinalScore(); return;
+  }
+  const q = quizData[qIndex];
+  qAnswered = false;
+  document.getElementById("quiz-emoji").textContent = q.emoji;
+  document.getElementById("quiz-question").textContent = q.q;
+  document.getElementById("quiz-feedback").className = "quiz-feedback";
+  document.getElementById("quiz-feedback").textContent = "";
+  document.getElementById("quiz-next").className = "quiz-next";
+  document.getElementById("quiz-score").textContent = `Pregunta ${qIndex+1} de ${quizData.length} · Aciertos: ${qScore}`;
+  const optEl = document.getElementById("quiz-options");
+  optEl.innerHTML = "";
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.className = "quiz-option";
+    btn.textContent = opt;
+    btn.onclick = () => answerQuiz(i);
+    optEl.appendChild(btn);
+  });
+}
+
+function answerQuiz(chosen) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const q = quizData[qIndex];
+  const opts = document.querySelectorAll(".quiz-option");
+  opts.forEach((b,i) => {
+    b.classList.add("disabled");
+    if (i === q.correct) b.classList.add("correct");
+    if (i === chosen && chosen !== q.correct) b.classList.add("wrong");
+  });
+  const fb = document.getElementById("quiz-feedback");
+  if (chosen === q.correct) {
+    qScore++;
+    fb.textContent = "✅ " + q.exp;
+    fb.className = "quiz-feedback ok show";
+  } else {
+    fb.textContent = "❌ " + q.exp;
+    fb.className = "quiz-feedback fail show";
+  }
+  document.getElementById("quiz-next").className = "quiz-next show";
+  document.getElementById("quiz-score").textContent = `Pregunta ${qIndex+1} de ${quizData.length} · Aciertos: ${qScore}`;
+}
+
+function nextQuestion() {
+  qIndex++;
+  loadQuestion();
+}
+
+function showFinalScore() {
+  const pct = Math.round((qScore/quizData.length)*100);
+  const emoji = pct >= 80 ? "🏆" : pct >= 50 ? "🌿" : "📚";
+  document.getElementById("quiz-emoji").textContent = emoji;
+  document.getElementById("quiz-question").textContent = `¡Finalizaste! Obtuviste ${qScore} de ${quizData.length} respuestas correctas (${pct}%)`;
+  document.getElementById("quiz-options").innerHTML = "";
+  document.getElementById("quiz-feedback").className = "quiz-feedback";
+  document.getElementById("quiz-score").textContent = pct >= 80 ? "¡Excelente! Eres un guardián de la fauna local." : pct >= 50 ? "¡Bien! Seguí aprendiendo sobre la fauna de Maldonado." : "¡Sigue explorando! La naturaleza tiene mucho para enseñar.";
+  const btn = document.getElementById("quiz-next");
+  btn.textContent = "Volver a intentar 🔄";
+  btn.className = "quiz-next show";
+  btn.onclick = initQuiz;
+}
+
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeModalDirect(); });
+
+buildGrids();
+initQuiz();
+</script>
+</body>
+</html>

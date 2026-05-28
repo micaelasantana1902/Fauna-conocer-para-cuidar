@@ -663,7 +663,7 @@ const animals = {
     {
       emoji: "🦔",
       img: "img/TATU.webp",
-      name: "Tatú peludo",
+      name: "Tatú",
       sciname: "Chaetophractus villosus",
       teaser: "Armadillo adaptable, excavador nocturno del campo uruguayo",
       status: "verde",
@@ -678,7 +678,7 @@ const animals = {
     {
       emoji: "🐬",
       img: "img/DELFIN_NARIZ_DE_BOTELLA__TONINA.webp",
-      name: "Tonina overa",
+      name: "Tonina",
       sciname: "Cephalorhynchus commersonii",
       teaser: "Delfín blanco y negro, ícono de la costa atlántica uruguaya",
       status: "amarillo",
@@ -691,7 +691,7 @@ const animals = {
     {
       emoji: "🦭",
       img: "img/LOBO_MARINO.JPG",
-      name: "Lobo marino de un pelo",
+      name: "Lobo marino",
       sciname: "Otaria flavescens",
       teaser: "Gran pinnípedo que coloniza las costas rocosas de Maldonado",
       status: "verde",
@@ -704,7 +704,7 @@ const animals = {
     {
       emoji: "🐢",
       img: "img/TORTUGA_MARINA.jpg",
-      name: "Tortuga cabezona",
+      name: "Tortuga marina",
       sciname: "Caretta caretta",
       teaser: "Tortuga marina que visita las costas uruguayas para alimentarse",
       status: "amarillo",
@@ -745,7 +745,7 @@ const animals = {
     {
       emoji: "🦜",
       img: "img/COTORRA.jfif",
-      name: "Cotorra",
+      name: "Loro",
       sciname: "Myiopsitta monachus",
       teaser: "Loro verde social y ruidoso, muy común en zonas urbanas y rurales",
       status: "verde",
@@ -812,11 +812,30 @@ const animals = {
 
 // QUIZ
 const quizData = [
-  { emoji: "🦈", q: "¿Cuál especie de tiburón pequeño está en peligro de extinción en Uruguay?", opts: ["Tiburón azul","Cazón","Tintorera","Cornuda"], correct: 1, exp: "¡Así es! El cazón (Mustelus schmitti) está en peligro en Uruguay debido a la sobrepesca. Si se captura accidentalmente, debe soltarse con cuidado." },
-  { emoji: "🦜", q: "¿Cuál es la característica especial del nido de la cotorra?", opts: ["Lo construye en huecos de árboles","Es un nido comunal de palitos que puede pesar varios kilos","Lo hace en el suelo","Es el más pequeño de todas las aves"],correct:1, exp:"¡Correcto! La cotorra construye enormes nidos comunales de ramas que pueden pesar varios kilos, visibles en eucaliptos y estructuras urbanas de Maldonado."}
+  // Terrestres (5)
+  { emoji: "🦔", q: "¿Cuál es una característica del carpincho?", opts: ["Es el roedor más grande del mundo","Vive lejos del agua","Solo se alimenta de carne","No sabe nadar"], correct: 0, exp: "El carpincho es el roedor más grande del mundo y suele vivir cerca del agua: nada muy bien y la usa para refugiarse." },
+  { emoji: "🦊", q: "¿Qué rol ecológico destacado cumple el zorro de monte?", opts: ["Controla roedores y dispersa semillas","Solo poliniza flores","Exclusivamente depreda grandes mamíferos","No interactúa con el ecosistema"], correct: 0, exp: "El zorro de monte es omnívoro y ayuda a controlar roedores; además, al comer frutas, puede dispersar semillas." },
+  { emoji: "🦎", q: "¿Qué afirmación es correcta sobre el lagarto overo?", opts: ["Es el reptil más grande de Uruguay","Es un ave migratoria","Vive únicamente en el mar","No puede excavar madrigueras"], correct: 0, exp: "El lagarto overo es el reptil más grande de Uruguay y puede excavar madrigueras; también cumple un rol importante como carroñero y depredador." },
+  { emoji: "🦦", q: "¿Por qué el lobito de río suele considerarse un “indicador” ambiental?", opts: ["Su presencia sugiere buena calidad del agua","Porque siempre vive en desiertos","Porque solo se alimenta de hojas","Porque no necesita agua para vivir"], correct: 0, exp: "Las nutrias (lobito de río) dependen de ríos y arroyos sanos; verlas suele asociarse a cursos de agua relativamente limpios y con alimento disponible." },
+  { emoji: "🦔", q: "¿Qué comportamiento es típico del tatú peludo?", opts: ["Excava madrigueras y es principalmente nocturno","Construye nidos en árboles altos","Caza solo en grupo y de día","Vuela largas distancias"], correct: 0, exp: "El tatú peludo es un armadillo excavador: hace madrigueras, suele ser nocturno y su dieta es omnívora." },
+
+  // Acuáticas (5)
+  { emoji: "🐬", q: "¿Cómo se reconoce a la tonina overa?", opts: ["Por su patrón blanco y negro","Por ser verde brillante","Por tener una melena oscura","Por tener cuello negro y cuerpo blanco"], correct: 0, exp: "La tonina overa se destaca por su patrón blanco y negro y por ser un delfín pequeño y ágil de la costa atlántica." },
+  { emoji: "🦭", q: "¿Cuál es el lugar emblemático en Maldonado con una gran colonia de lobos marinos?", opts: ["Isla de Lobos","Laguna del Sauce","Sierra de las Ánimas","Río Negro"], correct: 0, exp: "La Isla de Lobos, frente a Punta del Este, es famosa por albergar una de las mayores colonias de lobos marinos del Atlántico Sur." },
+  { emoji: "🐢", q: "¿Qué amenaza es especialmente grave para la tortuga cabezona?", opts: ["Plásticos y pesca accidental","Polen de flores","Falta de viento","Exceso de nieve"], correct: 0, exp: "La tortuga cabezona puede verse afectada por plásticos (que confunde con alimento) y por la captura accidental en artes de pesca." },
+  { emoji: "🦈", q: "¿Cuál especie de tiburón pequeño está en peligro en Uruguay (según el material)?", opts: ["Cazón","Tiburón azul","Tintorera","Cornuda"], correct: 0, exp: "El cazón (Mustelus schmitti) está en peligro por la sobrepesca y su reproducción lenta. Si se captura accidentalmente, debe devolverse al agua con cuidado." },
+  { emoji: "🌊", q: "¿Por qué se recomienda “arrastrar los pies” al entrar al mar en zonas donde hay rayas?", opts: ["Para evitar pisarlas si están enterradas en la arena","Para nadar más rápido","Para espantar a los peces","Para calentar el agua"], correct: 0, exp: "Muchas rayas se entierran en la arena; arrastrar los pies ayuda a alertarlas y reducir el riesgo de pisarlas y recibir una picadura defensiva." },
+
+  // Aéreas (5)
+  { emoji: "🦜", q: "¿Cuál es la característica especial del nido de la cotorra?", opts: ["Es un nido comunal de palitos que puede pesar varios kilos","Lo construye solo en huecos de árboles","Lo hace en el suelo","Es el más pequeño de todas las aves"], correct: 0, exp: "La cotorra construye grandes nidos comunales de ramas que pueden pesar varios kilos, visibles en árboles y estructuras urbanas." },
+  { emoji: "🦅", q: "¿Qué hace el águila pescadora para capturar peces?", opts: ["Se lanza en picada hacia el agua y toma el pez con las patas","Solo caza peces en tierra firme","Se alimenta únicamente de frutos","Caza de noche desde cuevas"], correct: 0, exp: "El águila pescadora se especializa en peces: se cierne y se lanza al agua para atraparlos con las patas." },
+  { emoji: "🦢", q: "¿Qué indica (en general) la presencia del cisne de cuello negro en un humedal?", opts: ["Suele asociarse a humedales saludables con plantas acuáticas","Que el humedal no tiene agua","Que el lugar es un desierto","Que no hay vegetación"], correct: 0, exp: "El cisne de cuello negro se alimenta de plantas acuáticas; su presencia suele relacionarse con humedales en buen estado." },
+  { emoji: "🦉", q: "¿Por qué es importante evitar raticidas donde vive la lechuza de campanario?", opts: ["Porque puede intoxicarse al comer roedores envenenados","Porque la ayudan a cazar mejor","Porque alimentan a sus crías","Porque hacen que anide más"], correct: 0, exp: "Los raticidas pueden envenenar a la lechuza indirectamente: si come roedores intoxicados, también se intoxica." },
+  { emoji: "🐦", q: "¿Qué rasgo de caza caracteriza a la garza mora?", opts: ["Espera inmóvil con paciencia para atrapar presas","Persigue presas corriendo en manada","Solo come semillas","Caza exclusivamente de noche en bosques"], correct: 0, exp: "La garza mora caza con paciencia: permanece inmóvil esperando el momento para capturar peces u otras presas cerca del agua." }
 ];
 
 let qIndex = 0, qScore = 0, qAnswered = false;
+let qShuffledOpts = [];
 
 function buildGrids() {
   ["terrestre","acuatica","aerea"].forEach(type => {
@@ -905,10 +924,18 @@ function loadQuestion() {
   document.getElementById("quiz-score").textContent = `Pregunta ${qIndex+1} de ${quizData.length} · Aciertos: ${qScore}`;
   const optEl = document.getElementById("quiz-options");
   optEl.innerHTML = "";
-  q.opts.forEach((opt, i) => {
+
+  // Mezcla opciones para que la correcta no quede fija en la misma posicion.
+  qShuffledOpts = q.opts.map((text, originalIndex) => ({ text, originalIndex }));
+  for (let i = qShuffledOpts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [qShuffledOpts[i], qShuffledOpts[j]] = [qShuffledOpts[j], qShuffledOpts[i]];
+  }
+
+  qShuffledOpts.forEach((opt, i) => {
     const btn = document.createElement("button");
     btn.className = "quiz-option";
-    btn.textContent = opt;
+    btn.textContent = opt.text;
     btn.onclick = () => answerQuiz(i);
     optEl.appendChild(btn);
   });
@@ -918,14 +945,16 @@ function answerQuiz(chosen) {
   if (qAnswered) return;
   qAnswered = true;
   const q = quizData[qIndex];
+  const chosenOriginal = qShuffledOpts[chosen].originalIndex;
+  const correctDisplayIndex = qShuffledOpts.findIndex(o => o.originalIndex === q.correct);
   const opts = document.querySelectorAll(".quiz-option");
   opts.forEach((b,i) => {
     b.classList.add("disabled");
-    if (i === q.correct) b.classList.add("correct");
-    if (i === chosen && chosen !== q.correct) b.classList.add("wrong");
+    if (i === correctDisplayIndex) b.classList.add("correct");
+    if (i === chosen && chosenOriginal !== q.correct) b.classList.add("wrong");
   });
   const fb = document.getElementById("quiz-feedback");
-  if (chosen === q.correct) {
+  if (chosenOriginal === q.correct) {
     qScore++;
     fb.textContent = "✅ " + q.exp;
     fb.className = "quiz-feedback ok show";
